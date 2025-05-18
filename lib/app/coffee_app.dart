@@ -1,11 +1,15 @@
 import 'package:coffee_shop/common/api_client.dart';
 import 'package:coffee_shop/features/home/data/datasource/category_datasource.dart';
+import 'package:coffee_shop/features/home/data/datasource/coffee_datasource.dart';
 import 'package:coffee_shop/features/home/data/datasource/theme_datasource.dart';
 import 'package:coffee_shop/features/home/data/repository/category_repository_impl.dart';
+import 'package:coffee_shop/features/home/data/repository/coffee_repository_impl.dart';
 import 'package:coffee_shop/features/home/data/repository/theme_repository_impl.dart';
 import 'package:coffee_shop/features/home/domain/repository/category_repository.dart';
+import 'package:coffee_shop/features/home/domain/repository/coffee_repository.dart';
 import 'package:coffee_shop/features/home/domain/repository/theme_repository.dart';
 import 'package:coffee_shop/features/home/presentation/bloc/category/category_bloc.dart';
+import 'package:coffee_shop/features/home/presentation/bloc/coffee/coffee_bloc.dart';
 import 'package:coffee_shop/features/home/presentation/bloc/theme/theme_bloc.dart';
 import 'package:coffee_shop/features/home/presentation/bloc/theme/theme_state.dart';
 import 'package:coffee_shop/routing/app_routing.dart';
@@ -25,15 +29,21 @@ class CoffeeApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MultiRepositoryProvider(
+
         providers: [
           RepositoryProvider<IThemeRepository>(
             create: (context) => ThemeRepository(themeDataSource: ThemeDataSource(storage: SharedPreferencesAsync())),
           ),
           RepositoryProvider<ICategoryRepository>(
             create: (context) => CategoryRepository(categoryDataSource: CategoryDataSource(apiClient: _apiClient)),
+          ),
+          RepositoryProvider<ICoffeeRepository>(
+            create: (context) => CoffeeRepository(coffeeDataSource: CoffeeDataSource(apiClient: _apiClient)),
           )
         ],
+
         child: MultiBlocProvider(
+
             providers: [
               BlocProvider(
                 create: (context) {
@@ -49,7 +59,15 @@ class CoffeeApp extends StatelessWidget {
                   return bloc;
                 },
               ),
+              BlocProvider(
+                create: (context) {
+                  final bloc = CoffeeBloc(coffeeRepository: context.read<ICoffeeRepository>());
+                  bloc.add(CoffeeEvent.loadCoffee());
+                  return bloc;
+                },
+              ),
             ],
+
             child: BlocBuilder<ThemeBloc, ThemeState>(
               builder: (context, state) {
                 return MaterialApp.router(

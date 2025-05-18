@@ -15,9 +15,16 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(const CategoryState.loading());
       try {
         final categories = await categoryRepository.getCategories();
-        emit(CategoryState.loaded(categories));
-      } catch (e, stack) {
-        emit(CategoryState.error('$stack Ошибка загрузки категорий'));
+        emit(CategoryState.loaded(categories, categories.first.id));
+      } catch (e) {
+        emit(CategoryState.error('Ошибка загрузки категорий'));
+      }
+    });
+
+    on<SelectCategory>((event, emit) {
+      final currentState = state;
+      if(currentState is CategoryLoadedState) {
+        emit(currentState.copyWith(selectedCategoryId: event.id));
       }
     });
   }

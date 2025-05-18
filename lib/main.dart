@@ -10,5 +10,7 @@ void main() async {
   final dio = Dio();
   final apiClient = ApiClient(dio, baseUrl: Env.baseUrl);
 
-  runApp(CoffeeApp(apiClient: apiClient));
+  runApp(
+      CoffeeApp(apiClient: apiClient),
+  );
 }

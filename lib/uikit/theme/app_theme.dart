@@ -77,10 +77,10 @@ class AppTheme {
     ),
     labelMedium: TextStyle(
       fontFamily: FontFamily.openSans,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w600,
       fontSize: 15,
       height: 1.21,
-      color: AppColors.white,
+      color: AppColors.neutralDark,
     ),
     labelSmall: TextStyle(
       fontFamily: FontFamily.openSans,
