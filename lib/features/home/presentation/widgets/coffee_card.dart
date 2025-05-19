@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../resourses/app_images.dart';
 import '../../domain/entity/coffee_model.dart';
 
 class CoffeeCard extends StatelessWidget {
@@ -22,51 +23,56 @@ class CoffeeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: Image.network(
-              coffee.imageUrl,
-              fit: BoxFit.contain,
-              errorBuilder: (context, url, error) => const Icon(Icons.error),
-            ),
-          ),
-
-          Text(
-            coffee.name,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                '$price ₽',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+              AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  coffee.imageUrl,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, url, error) => Image.asset(AppImages.coffeeError),
                 ),
               ),
 
+              SizedBox(height: 8),
 
-        Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: BoxShape.circle,
+              Text(
+                coffee.name,
+                style: Theme.of(context).textTheme.titleLarge,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
-          child: IconButton(
-            icon: const Icon(Icons.add, size: 16),
-            onPressed: onAdd,
-            color: Colors.white,
-            padding: EdgeInsets.zero,
-            splashRadius: 18,
-          ),
-        )
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                '$price ₽',
+                style: Theme.of(context).textTheme.titleMedium
+              ),
+
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.add, size: 16),
+                  onPressed: onAdd,
+                  color: Colors.white,
+                  padding: EdgeInsets.zero,
+                  splashRadius: 18,
+                ),
+              )
             ],
           ),
         ],

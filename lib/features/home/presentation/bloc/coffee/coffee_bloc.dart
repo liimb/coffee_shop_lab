@@ -14,6 +14,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   CoffeeBloc({required ICoffeeRepository coffeeRepository}) : _coffeeRepository = coffeeRepository, super(CoffeeState.initial()) {
     on<LoadCoffee>((event, emit) async {
       try {
+        emit(CoffeeState.loading());
         final coffee = await _coffeeRepository.getCoffee();
         emit(CoffeeState.loaded(coffee));
       } catch (e,stack) {

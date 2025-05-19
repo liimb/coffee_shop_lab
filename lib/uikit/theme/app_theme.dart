@@ -90,24 +90,24 @@ class AppTheme {
       color: AppColors.white,
     ),
     titleSmall: TextStyle(
-      fontFamily: FontFamily.openSans,
+      fontFamily: FontFamily.openSansRegular,
       fontWeight: FontWeight.w400,
-      fontSize: 12,
+      fontSize: 24,
       height: 1,
       letterSpacing: -0.24,
       color: AppColors.white,
     ),
     titleMedium: TextStyle(
-      fontFamily: FontFamily.openSans,
-      fontWeight: FontWeight.w400,
-      fontSize: 24,
+      fontFamily: FontFamily.openSansSemiBold,
+      fontWeight: FontWeight.w600,
+      fontSize: 16,
       height: 1.21,
       color: AppColors.white,
     ),
     titleLarge: TextStyle(
       fontFamily: FontFamily.openSans,
       fontWeight: FontWeight.w400,
-      fontSize: 24,
+      fontSize: 16,
       height: 1.21,
       color: AppColors.white,
     ),
@@ -122,8 +122,8 @@ class AppTheme {
     ),
     cardColor: Colors.white,
     textTheme: textTheme.apply(
-      bodyColor: AppColors.white,
-      displayColor: AppColors.white,
+      bodyColor: AppColors.neutralDark,
+      displayColor: AppColors.neutralDark,
     ),
   );
 

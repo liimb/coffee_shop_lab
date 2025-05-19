@@ -1,3 +1,4 @@
+import 'package:coffee_shop/uikit/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,7 +40,9 @@ class ThemeCartFab extends StatelessWidget {
                 },
                 heroTag: "cartFAB",
                 icon: Image.asset("assets/images/cart_shopping.png", width: 25, height: 25),
-                label: Text("7979797979 руб", style: Theme.of(context).textTheme.displayLarge)
+                label: Text("7979797979 руб", style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                  color: AppColors.white
+                ))
             ),
           ],
         )

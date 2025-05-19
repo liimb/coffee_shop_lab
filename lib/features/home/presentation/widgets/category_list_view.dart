@@ -12,8 +12,7 @@ class CategoryListView extends StatelessWidget {
       builder: (context, state) {
         switch (state) {
           case CategoryLoadingState():
-            return Center(child: SizedBox(width:25,height:25,child: CircularProgressIndicator()));
-
+            return SizedBox(height: 60);
           case CategoryLoadedState():
             final loadedState = state;
             final categories = loadedState.categories;

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entity/coffee_model.dart';
 import '../bloc/coffee/coffee_bloc.dart';
+import '../bloc/category/category_bloc.dart';
 import 'coffee_card.dart';
 
 class CoffeeListView extends StatelessWidget {
@@ -11,69 +12,113 @@ class CoffeeListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CoffeeBloc, CoffeeState>(
-      builder: (context, state) {
-        switch (state) {
-          case CoffeeLoadingState():
-            return const Center(
-              child: SizedBox(width: 25, height: 25, child: CircularProgressIndicator()),
-            );
+      builder: (context, coffeeState) {
+        return BlocBuilder<CategoryBloc, CategoryState>(
+          builder: (context, categoryState) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<CoffeeBloc>().add(CoffeeEvent.loadCoffee());
+                context.read<CategoryBloc>().add(
+                    CategoryEvent.loadCategories());
+                await Future.delayed(const Duration(milliseconds: 500));
+              },
+              child: () {
+                if (coffeeState is CoffeeLoadingState ||
+                    categoryState is CategoryLoadingState) {
+                  return const Center(
+                    child: SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
 
-          case CoffeeLoadedState():
-            final coffees = state.coffee;
+                if (coffeeState is CoffeeErrorState ||
+                    categoryState is CategoryErrorState) {
+                  final message = coffeeState is CoffeeErrorState
+                      ? coffeeState.message
+                      : (categoryState is CategoryErrorState ? categoryState
+                      .message : "Ошибка");
 
-            final grouped = <String, List<CoffeeModel>>{};
-            for (final coffee in coffees) {
-              final categoryName = coffee.category.slug;
-              grouped.putIfAbsent(categoryName, () => []).add(coffee);
-            }
-
-            return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              children: grouped.entries.expand((entry) {
-                final category = entry.key;
-                final items = entry.value;
-
-                return [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 0),
-                    child: Text(
-                      category,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                  return ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.6,
+                        child: Center(child: Text(message)),
                       ),
-                    ),
-                  ),
+                    ],
+                  );
+                }
 
-                  GridView.builder(
-                    itemCount: items.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 0.65,
-                    ),
-                    itemBuilder: (context, index) {
-                      final coffee = items[index];
-                      return CoffeeCard(
-                        coffee: coffee,
-                        onAdd: () {
-                          // context.read<CartBloc>().add(CartEvent.addItem(coffee));
-                        },
-                      );
-                    },
-                  ),
-                ];
-              }).toList(),
+                if (coffeeState is CoffeeLoadedState &&
+                    categoryState is CategoryLoadedState) {
+                  final coffees = coffeeState.coffee;
+                  final categories = categoryState.categories;
+                  final grouped = <String, List<CoffeeModel>>{};
+                  for (final category in categories) {
+                    grouped[category.slug] =
+                        coffees
+                            .where((c) => c.category.slug == category.slug)
+                            .toList();
+                  }
+
+                  return ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    physics: const BouncingScrollPhysics(),
+                    children: grouped.entries.expand((entry) {
+                      final items = entry.value;
+                      if (items.isEmpty) return <Widget>[];
+
+                      return [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 24, top: 16),
+                          child: Text(
+                            entry.key,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .titleSmall,
+                          ),
+                        ),
+                        MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          child: GridView.builder(
+                            itemCount: items.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 8,
+                              crossAxisSpacing: 8,
+                              childAspectRatio: 0.65,
+                            ),
+                            itemBuilder: (context, index) {
+                              final coffee = items[index];
+                              return CoffeeCard(
+                                coffee: coffee,
+                                onAdd: () {
+                                  // context.read<CartBloc>().add(CartEvent.addItem(coffee));
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ];
+                    }).toList(),
+                  );
+                }
+
+                return const SizedBox();
+              }(),
             );
-
-          case CoffeeErrorState():
-            return Center(child: Text(state.message));
-
-          default:
-            return const SizedBox();
-        }
+          },
+        );
       },
     );
   }
