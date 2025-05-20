@@ -43,7 +43,7 @@ class AppTheme {
     ),
     bodyLarge: TextStyle(
       fontFamily: FontFamily.openSans,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       fontSize: 16,
       height: 1.21,
       color: AppColors.white,
@@ -57,7 +57,7 @@ class AppTheme {
     ),
     headlineLarge: TextStyle(
       fontFamily: FontFamily.openSans,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w400,
       fontSize: 24,
       height: 1.21,
     ),
@@ -100,14 +100,14 @@ class AppTheme {
     titleMedium: TextStyle(
       fontFamily: FontFamily.openSansSemiBold,
       fontWeight: FontWeight.w600,
-      fontSize: 16,
+      fontSize: 18,
       height: 1.21,
       color: AppColors.white,
     ),
     titleLarge: TextStyle(
       fontFamily: FontFamily.openSans,
       fontWeight: FontWeight.w400,
-      fontSize: 16,
+      fontSize: 18,
       height: 1.21,
       color: AppColors.white,
     ),

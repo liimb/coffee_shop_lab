@@ -41,6 +41,7 @@ flutter:
     - assets/images/moon.png
     - assets/images/cart_shopping.png
     - assets/images/coffee_error.png
+    - assets/images/back.png
 
     - assets/fonts/open_sans.ttf
     - assets/fonts/open_sans_regular.ttf

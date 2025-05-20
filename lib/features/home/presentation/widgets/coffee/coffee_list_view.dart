@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entity/coffee_model.dart';
-import '../bloc/coffee/coffee_bloc.dart';
-import '../bloc/category/category_bloc.dart';
+import '../../../domain/entity/coffee_model.dart';
+import '../../bloc/coffee/coffee_bloc.dart';
+import '../../bloc/category/category_bloc.dart';
 import 'coffee_card.dart';
 
 class CoffeeListView extends StatelessWidget {
@@ -25,12 +25,17 @@ class CoffeeListView extends StatelessWidget {
               child: () {
                 if (coffeeState is CoffeeLoadingState ||
                     categoryState is CategoryLoadingState) {
-                  return const Center(
-                    child: SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircularProgressIndicator(),
-                    ),
+                  return ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height * 0.6,
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                    ],
                   );
                 }
 
@@ -68,7 +73,7 @@ class CoffeeListView extends StatelessWidget {
                   }
 
                   return ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 150),
                     physics: const BouncingScrollPhysics(),
                     children: grouped.entries.expand((entry) {
                       final items = entry.value;
@@ -76,6 +81,7 @@ class CoffeeListView extends StatelessWidget {
 
                       return [
                         Padding(
+                          key: ValueKey(entry.key),//categoryState.categoryKeys[entry.key],
                           padding: const EdgeInsets.only(bottom: 24, top: 16),
                           child: Text(
                             entry.key,
@@ -94,13 +100,14 @@ class CoffeeListView extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
                               childAspectRatio: 0.65,
                             ),
                             itemBuilder: (context, index) {
                               final coffee = items[index];
                               return CoffeeCard(
+                                key: ValueKey(coffee.id),
                                 coffee: coffee,
                                 onAdd: () {
                                   // context.read<CartBloc>().add(CartEvent.addItem(coffee));

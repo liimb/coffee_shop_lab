@@ -69,6 +69,7 @@ class CoffeeApp extends StatelessWidget {
             ],
 
             child: BlocBuilder<ThemeBloc, ThemeState>(
+              buildWhen: (previous, current) => previous.themeMode != current.themeMode,
               builder: (context, state) {
                 return MaterialApp.router(
                   theme: AppTheme.lightTheme,

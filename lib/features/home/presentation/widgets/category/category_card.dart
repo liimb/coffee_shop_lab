@@ -17,22 +17,24 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 60, child: Material(
-      color: _isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).cardColor,
-      borderRadius: BorderRadius.circular(32),
-      child: InkWell(
+    return SizedBox(
+        height: 60,
+        child: Material (
+          color: _isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(32),
-          onTap: _onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Center(child: Text(
-                _categoryModel.slug,
-                style: _getTextStyle(context)
-            ),
-            ),
-          )
-      ),
-    )
+          child: InkWell(
+              borderRadius: BorderRadius.circular(32),
+              onTap: _onTap,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Center(child: Text(
+                    _categoryModel.slug,
+                    style: _getTextStyle(context)
+                ),
+                ),
+              )
+          ),
+        )
     );
   }
 

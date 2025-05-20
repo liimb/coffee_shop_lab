@@ -23,5 +23,4 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
       }
     });
   }
-
 }

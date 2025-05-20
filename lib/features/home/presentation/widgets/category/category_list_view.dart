@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/category/category_bloc.dart';
+import '../../bloc/category/category_bloc.dart';
 import 'category_card.dart';
 
 class CategoryListView extends StatelessWidget {
@@ -30,8 +30,8 @@ class CategoryListView extends StatelessWidget {
 
                   return Padding(
                     padding: EdgeInsets.only(
-                      left: isFirst && !isLast ? 32 : 8,
-                      right: isLast ? 32 : 0,
+                      left: isFirst && !isLast ? 16 : 8,
+                      right: isLast ? 16 : 0,
                     ),
                     child: CategoryCard(
                       categoryModel: category,
@@ -48,8 +48,9 @@ class CategoryListView extends StatelessWidget {
             )));
 
           case CategoryErrorState():
-            final errorState = state;
-            return Text(errorState.message);
+            return SizedBox(height: 60);
+            // final errorState = state;
+            // return Text(errorState.message);
 
           default:
             return const SizedBox();

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../domain/repository/category_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,7 +16,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       emit(const CategoryState.loading());
       try {
         final categories = await categoryRepository.getCategories();
-        emit(CategoryState.loaded(categories, categories.first.id));
+        final Map<String, GlobalKey> categoriesKeys = {
+          for (final category in categories) category.slug: GlobalKey()
+        };
+        emit(CategoryState.loaded(categories, categories.first.id, categoriesKeys));
       } catch (e) {
         emit(CategoryState.error('Ошибка загрузки категорий'));
       }
