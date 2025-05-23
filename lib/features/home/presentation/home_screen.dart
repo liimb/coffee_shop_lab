@@ -1,37 +1,108 @@
-import 'package:coffee_shop/features/home/presentation/widgets/cart_fab.dart';
-import 'package:coffee_shop/features/home/presentation/widgets/category/category_list_view.dart';
-import 'package:coffee_shop/features/home/presentation/widgets/coffee/coffee_list_view.dart';
-import 'package:coffee_shop/features/home/presentation/widgets/theme_fab.dart';
+import 'package:coffee_shop/features/cart/presentation/widget/cart_fab.dart';
+import 'package:coffee_shop/features/order/presentation/widget/order_snack_bar.dart';
+import 'package:coffee_shop/features/theme/presentation/widget/theme_fab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import '../../../common/app_constants.dart';
+import '../../cart/presentation/bloc/cart_bloc.dart';
+import '../../cart/presentation/widget/cart_bottom_sheet.dart';
+import '../../category/presentation/widget/category_list_view.dart';
+import '../../coffee/presentation/bloc/coffee_bloc.dart';
+import '../../coffee/presentation/widget/coffee_list_view.dart';
+import '../../order/domain/entity/order_model.dart';
+import '../../order/presentation/bloc/order_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-          children: [
-            SafeArea(
-              child: CategoryListView(),
-            ),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<CoffeeBloc, CoffeeState>(
+          listener: (context, state) {
+            if (state is CoffeeLoadedState) {
+              context.read<CartBloc>().add(CartEvent.initial(state.coffee));
+            }
+          },
+        ),
+        BlocListener<OrderBloc, OrderState>(
+            listener: (context, state) {
+              if (state is OrderSuccessState) {
+                context.read<CartBloc>().add(CartCleanEvent());
+                context.pop();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  orderSnackBar(state.message, context),
+                );
+              } else if (state is OrderErrorState) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                    orderSnackBar(state.message, context)
+                );
+              }
+            }
+        )
+      ],
+      child: Scaffold(
+        body: Column(
+          children: const [
+            SafeArea(child: CategoryListView()),
             Expanded(child: CoffeeListView())
-          ]
-      ),
+          ],
+        ),
+        floatingActionButton: SizedBox(
+          height: 60,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ThemeFab(),
+                CartFab(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Theme
+                          .of(context)
+                          .cardColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius
+                            .circular(20)),
+                      ),
+                      builder: (context) {
+                         return CartBottomSheet(
 
-      floatingActionButton: Padding (
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row (
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ThemeFab(),
-                  CartFab()
-                ],
-              )
+                          onCleanCart: () {
+                            context.read<CartBloc>().add(CartCleanEvent());
+                            context.pop();
+                          },
+
+                          onCreateOrder: () {
+                            final cartState = context
+                                .read<CartBloc>()
+                                .state;
+                            final positions = <int, int>{};
+                            for (final coffee in cartState.coffee) {
+                              positions.update(coffee.id, (value) => value + 1, ifAbsent: () => 1);
+                            }
+                            final order = OrderModel(positions: positions, token: token);
+                            context.read<OrderBloc>().add(CreateOrderEvent(order));
+                          },
+
+                        );
+                      }
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
-
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
     );
   }
 }

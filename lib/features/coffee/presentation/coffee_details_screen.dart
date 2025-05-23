@@ -1,12 +1,12 @@
-import 'package:coffee_shop/features/home/presentation/widgets/theme_fab.dart';
+import 'package:coffee_shop/features/theme/presentation/widget/theme_fab.dart';
 import 'package:coffee_shop/resourses/app_images.dart';
 import 'package:coffee_shop/uikit/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../home/domain/entity/coffee_model.dart';
-import '../../home/presentation/bloc/theme/theme_bloc.dart';
+import '../domain/entity/coffee_model.dart';
+import '../../theme/presentation/bloc/theme_bloc.dart';
 
 class CoffeeDetailsScreen extends StatelessWidget {
   const CoffeeDetailsScreen({required CoffeeModel coffee, super.key}) : _coffeeModel = coffee;
@@ -16,43 +16,44 @@ class CoffeeDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final isLight = context.watch<ThemeBloc>().state.themeMode == ThemeMode.light;
+    final isLight = context.watch<ThemeBloc>().state.themeMode == ThemeMode.light; //TODO: убрать проверку темы
 
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 16),
-            child:
-            Column(
+        child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: IconButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              icon: Image.asset(AppImages.back, color: isLight ? AppColors.neutralDark : AppColors.white)
-                          )
+                  SizedBox(
+                      height: 40,
+                      child: IconButton(
+                          onPressed: () {
+                            context.pop();
+                          },
+                          icon: Image.asset(AppImages.back, color: isLight ? AppColors.neutralDark : AppColors.white)
                       )
-                    ],
-                  ),
+                  )
+                ],
+              ),
 
-                  const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-                  Column(
+              Padding(
+                  padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+                  child:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       AspectRatio(
                         aspectRatio: 1,
-                        child: Image.network(
-                          _coffeeModel.imageUrl,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, url, error) => Image.asset(AppImages.coffeeError),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                            _coffeeModel.imageUrl,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, url, error) => Image.asset(AppImages.coffeeError),
+                          ),
                         ),
                       ),
 
@@ -73,10 +74,9 @@ class CoffeeDetailsScreen extends StatelessWidget {
                       ),
                     ],
                   )
-                ]
-            ),
-          )
-
+              )
+            ]
+        ),
       ),
 
       floatingActionButton: ThemeFab(),

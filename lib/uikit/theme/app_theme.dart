@@ -29,8 +29,8 @@ class AppTheme {
     ),
     headlineSmall: TextStyle(
       fontFamily: FontFamily.openSans,
-      fontWeight: FontWeight.bold,
-      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      fontSize: 24,
       height: 1.5,
       color: AppColors.white,
     ),
@@ -116,11 +116,14 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     colorScheme: ColorScheme.light(
-      primary: Color(0xFF5CBCE5),
-      secondary: Color(0xFFF7FAF8),
-      surface: Color(0xFFF7FAF8),
+        primary: AppColors.primaryLight,
+        secondary: AppColors.neutralLight,
+        surface: AppColors.surfaceLight,
+        inversePrimary: AppColors.black,
+        onPrimary: AppColors.neutralTwoDark,
+        onSecondary: AppColors.neutralThreeDark
     ),
-    cardColor: Colors.white,
+    cardColor: AppColors.cardColorLight,
     textTheme: textTheme.apply(
       bodyColor: AppColors.neutralDark,
       displayColor: AppColors.neutralDark,
@@ -130,11 +133,14 @@ class AppTheme {
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     colorScheme: ColorScheme.dark(
-      primary: Color(0xFF53C1F0),
-      secondary: Color(0xFFF7FAF8),
-      surface: Color(0xFF313031),
+        primary: AppColors.primaryDark,
+        secondary: AppColors.neutralTwoDark,
+        surface: AppColors.surfaceDark,
+        inversePrimary: AppColors.white,
+        onPrimary: AppColors.neutralTwoDark,
+        onSecondary: AppColors.neutralThreeDark
     ),
-    cardColor: Color(0xFF484647),
+    cardColor: AppColors.cardColorDark,
     textTheme: textTheme.apply(
       bodyColor: AppColors.white,
       displayColor: AppColors.white,

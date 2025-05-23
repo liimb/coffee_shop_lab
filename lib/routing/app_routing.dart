@@ -1,5 +1,5 @@
 import 'package:coffee_shop/features/coffee/presentation/coffee_details_screen.dart';
-import 'package:coffee_shop/features/home/domain/entity/coffee_model.dart';
+import 'package:coffee_shop/features/coffee/domain/entity/coffee_model.dart';
 import 'package:coffee_shop/features/home/presentation/home_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,7 +9,7 @@ final router = GoRouter(
     GoRoute(
       path: '/',
       name: 'home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => HomeScreen(),
       routes: [
         GoRoute(
           path: 'details',

@@ -1,7 +1,10 @@
-import 'package:coffee_shop/features/home/data/entity/category_response_dto.dart';
-import 'package:coffee_shop/features/home/data/entity/coffee_response_dto.dart';
+import 'package:coffee_shop/features/category/data/entity/category_response_dto.dart';
+import 'package:coffee_shop/features/coffee/data/entity/coffee_response_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+
+import '../features/order/data/entity/order_dto.dart';
+import '../features/order/data/entity/order_response_dto.dart';
 
 part 'api_client.g.dart';
 
@@ -22,4 +25,10 @@ abstract class ApiClient {
     @Query("limit") int limit = 100,
     @Header('Content-Type') String contentType = 'application/json',
   });
+  
+  @POST("orders")
+  Future<OrderResponseDto> createOrder(
+    @Body() OrderDto body,
+    {@Header('Content-Type') String contentType = 'application/json'}
+  );
 }
