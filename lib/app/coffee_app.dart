@@ -46,10 +46,10 @@ class CoffeeApp extends StatelessWidget {
             create: (context) => ThemeRepository(themeDataSource: ThemeDataSource(storage: SharedPreferencesAsync())),
           ),
           RepositoryProvider<ICategoryRepository>(
-            create: (context) => CategoryRepository(categoryDataSource: CategoryDataSource(apiClient: _apiClient)),
+            create: (context) => CategoryRepository(categoryDataSource: CategoryDataSource(apiClient: _apiClient, appDatabase: _appDatabase)),
           ),
           RepositoryProvider<ICoffeeRepository>(
-            create: (context) => CoffeeRepository(coffeeDataSource: CoffeeDataSource(apiClient: _apiClient)),
+            create: (context) => CoffeeRepository(coffeeDataSource: CoffeeDataSource(apiClient: _apiClient, appDatabase: _appDatabase)),
           ),
           RepositoryProvider<ICartRepository>(
             create: (context) => CartRepository(cartDataSource: CartDataSource(appDatabase: _appDatabase)),

@@ -6,7 +6,7 @@ import '../../domain/repository/cart_repository.dart';
 class CartRepository implements ICartRepository {
   final ICartDataSource _cartDataSource;
 
-  CartRepository({required ICartDataSource cartDataSource}) : _cartDataSource = cartDataSource;
+  CartRepository({required cartDataSource}) : _cartDataSource = cartDataSource;
 
   @override
   Future<void> addOrUpdateItemToCart(CartItem item) async {

@@ -1,23 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_shop/features/theme/presentation/widget/theme_fab.dart';
 import 'package:coffee_shop/resourses/app_images.dart';
-import 'package:coffee_shop/uikit/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-
-import '../domain/entity/coffee_model.dart';
 import '../../theme/presentation/bloc/theme_bloc.dart';
+import '../../theme/presentation/bloc/theme_event.dart';
+import '../domain/entity/coffee_model.dart';
 
 class CoffeeDetailsScreen extends StatelessWidget {
-  const CoffeeDetailsScreen({required CoffeeModel coffee, super.key}) : _coffeeModel = coffee;
+  const CoffeeDetailsScreen({required CoffeeModel coffee, super.key, required this.onBack}) : _coffeeModel = coffee;
 
   final CoffeeModel _coffeeModel;
+  final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
-
-    final isLight = context.watch<ThemeBloc>().state.themeMode == ThemeMode.light; //TODO: убрать проверку темы
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -28,10 +25,8 @@ class CoffeeDetailsScreen extends StatelessWidget {
                   SizedBox(
                       height: 40,
                       child: IconButton(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          icon: Image.asset(AppImages.back, color: isLight ? AppColors.neutralDark : AppColors.white)
+                          onPressed: onBack,
+                          icon: Image.asset(AppImages.back, color: Theme.of(context).colorScheme.onSecondaryFixed)
                       )
                   )
                 ],
@@ -49,11 +44,12 @@ class CoffeeDetailsScreen extends StatelessWidget {
                         aspectRatio: 1,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            _coffeeModel.imageUrl,
+                          child:
+                          CachedNetworkImage(
+                            imageUrl: _coffeeModel.imageUrl,
                             fit: BoxFit.contain,
-                            errorBuilder: (context, url, error) => Image.asset(AppImages.coffeeError),
-                          ),
+                            errorWidget: (context, url, error) => Image.asset(AppImages.coffeeError),
+                          )
                         ),
                       ),
 
@@ -79,7 +75,11 @@ class CoffeeDetailsScreen extends StatelessWidget {
         ),
       ),
 
-      floatingActionButton: ThemeFab(),
+      floatingActionButton: ThemeFab(
+          onPressed: () {
+            context.read<ThemeBloc>().add(ToggleTheme());
+          }
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }

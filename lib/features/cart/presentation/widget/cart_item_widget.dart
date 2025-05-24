@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../resourses/app_images.dart';
@@ -21,17 +22,16 @@ class CartItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: 80,
+            width: 70,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, url, error) => Image.asset(AppImages.coffeeError),
-                ),
+                  errorWidget: (context, url, error) => Image.asset(AppImages.coffeeError),
+                )
               ),
           ),
 

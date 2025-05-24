@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/theme_bloc.dart';
-import '../bloc/theme_event.dart';
 import '../bloc/theme_state.dart';
 
 class ThemeFab extends StatelessWidget {
-  const ThemeFab({super.key});
+  const ThemeFab({super.key, required this.onPressed});
+
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +17,7 @@ class ThemeFab extends StatelessWidget {
             builder: (context, state) {
               return FloatingActionButton(
                 backgroundColor: Theme.of(context).colorScheme.primary,
-                onPressed: () {
-                  context.read<ThemeBloc>().add(ToggleTheme());
-                },
+                onPressed: onPressed,
                 heroTag: "themeFAB",
                 child: Image.asset(
                     context.read<ThemeBloc>().getThemeIcon(),

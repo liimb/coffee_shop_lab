@@ -16,7 +16,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       emit(const OrderState.loading());
       try {
         final response = await _orderRepository.createOrder(event.order);
-        if(response.message == "succлess") {
+        if(response.message == "success") {
           emit(const OrderState.success('Заказ создан'));
         } else {
           emit(const OrderState.error('Возникла ошибка при заказе'));

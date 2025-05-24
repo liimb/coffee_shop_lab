@@ -1,5 +1,5 @@
-import 'package:coffee_shop/features/category/data/entity/category_dto.dart';
-import 'package:coffee_shop/features/price/data/entity/price_dto.dart';
+import 'package:coffee_shop/features/category/data/entity/dto/category_dto.dart';
+import 'package:coffee_shop/features/price/data/entity/dto/price_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'coffee_dto.g.dart';

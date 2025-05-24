@@ -9,7 +9,10 @@ class CategoryCard extends StatelessWidget {
     required CategoryModel categoryModel,
     required bool isSelected,
     required VoidCallback onTap,
-    super.key}) : _categoryModel = categoryModel, _isSelected = isSelected, _onTap = onTap;
+    super.key}) :
+        _categoryModel = categoryModel,
+        _isSelected = isSelected,
+        _onTap = onTap;
 
   final CategoryModel _categoryModel;
   final bool _isSelected;

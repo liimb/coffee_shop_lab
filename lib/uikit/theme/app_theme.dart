@@ -121,7 +121,8 @@ class AppTheme {
         surface: AppColors.surfaceLight,
         inversePrimary: AppColors.black,
         onPrimary: AppColors.neutralTwoDark,
-        onSecondary: AppColors.neutralThreeDark
+        onSecondary: AppColors.neutralThreeDark,
+        onSecondaryFixed: AppColors.neutralDark
     ),
     cardColor: AppColors.cardColorLight,
     textTheme: textTheme.apply(
@@ -138,7 +139,8 @@ class AppTheme {
         surface: AppColors.surfaceDark,
         inversePrimary: AppColors.white,
         onPrimary: AppColors.neutralTwoDark,
-        onSecondary: AppColors.neutralThreeDark
+        onSecondary: AppColors.neutralThreeDark,
+        onSecondaryFixed: AppColors.white
     ),
     cardColor: AppColors.cardColorDark,
     textTheme: textTheme.apply(
@@ -146,5 +148,4 @@ class AppTheme {
       displayColor: AppColors.white,
     ),
   );
-
 }

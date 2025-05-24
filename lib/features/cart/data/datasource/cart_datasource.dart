@@ -1,6 +1,6 @@
-import 'package:coffee_shop/common/app_database.dart';
 import 'package:coffee_shop/features/cart/domain/entity/cart_item.dart';
 import 'package:drift/drift.dart';
+import '../../../../common/app_database.dart';
 import '../../../../common/app_database.dart' as db;
 
 abstract interface class ICartDataSource {
@@ -18,12 +18,10 @@ class CartDataSource implements ICartDataSource {
   @override
   Future<List<CartItem>> getCart() async {
     final rows = await _appDatabase.select(_appDatabase.cartItems).get();
-    return rows
-        .map((row) => CartItem(
+    return rows.map((row) => CartItem(
       id: row.id,
       count: row.count,
-    ))
-        .toList();
+    )).toList();
   }
 
   @override
@@ -31,7 +29,6 @@ class CartDataSource implements ICartDataSource {
     await _appDatabase.into(_appDatabase.cartItems).insertOnConflictUpdate(
       db.CartItemsCompanion(
         id: Value(item.id),
-        coffeeId: Value(item.id),
         count: Value(item.count),
       ),
     );

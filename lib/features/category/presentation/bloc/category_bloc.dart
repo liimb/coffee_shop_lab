@@ -12,17 +12,22 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   final ICategoryRepository _categoryRepository;
 
   CategoryBloc({required categoryRepository}) : _categoryRepository = categoryRepository, super(const CategoryState.initial()) {
-    on<LoadCategories>((event, emit) async {
+    on<LoadCategoriesEvent>((event, emit) async {
       emit(const CategoryState.loading());
       try {
         final categories = await fetchWithRetry(() => _categoryRepository.getCategories());
         emit(CategoryState.loaded(categories, categories.first.id));
       } catch (e) {
-        emit(CategoryState.error('Ошибка загрузки категорий'));
+        final categories = await _categoryRepository.getCategoriesFromDb();
+        if(categories.isNotEmpty) {
+          emit(CategoryState.loaded(categories, categories.first.id));
+        } else {
+          emit(CategoryState.error('Ошибка загрузки категорий'));
+        }
       }
     });
 
-    on<SelectCategory>((event, emit) {
+    on<SelectCategoryEvent>((event, emit) {
       final currentState = state;
       if(currentState is CategoryLoadedState) {
         emit(currentState.copyWith(selectedCategoryId: event.id));

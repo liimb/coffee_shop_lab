@@ -1,4 +1,4 @@
-import 'package:coffee_shop/features/coffee/data/entity/coffee_dto.dart';
+import 'package:coffee_shop/features/coffee/data/entity/dto/coffee_dto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'coffee_response_dto.g.dart';

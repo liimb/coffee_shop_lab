@@ -14,7 +14,10 @@ void main() async {
     await FlutterDisplayMode.setHighRefreshRate();
   }
 
-  final dio = Dio();
+  final dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 3),
+  ));
+
   final apiClient = ApiClient(dio, baseUrl: Env.baseUrl);
   final appDatabase = AppDatabase();
 

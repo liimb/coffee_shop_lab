@@ -4,7 +4,9 @@ import '../bloc/category_bloc.dart';
 import 'category_card.dart';
 
 class CategoryListView extends StatelessWidget {
-  const CategoryListView({super.key});
+  const CategoryListView({required onTapCard, super.key}) : _onTapCard = onTapCard;
+
+  final Function(int id) _onTapCard;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,7 @@ class CategoryListView extends StatelessWidget {
                     child: CategoryCard(
                       categoryModel: category,
                       isSelected: isSelected,
-                      onTap: () {
-                        context.read<CategoryBloc>().add(
-                          CategoryEvent.selectCategory(category.id),
-                        );
-                      },
+                      onTap: () => _onTapCard(category.id)
                     ),
                   );
                 },
@@ -49,8 +47,6 @@ class CategoryListView extends StatelessWidget {
 
           case CategoryErrorState():
             return SizedBox(height: 60);
-            // final errorState = state;
-            // return Text(errorState.message);
 
           default:
             return const SizedBox();

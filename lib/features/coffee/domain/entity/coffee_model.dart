@@ -1,12 +1,11 @@
+import 'package:coffee_shop/features/category/domain/entity/category_model.dart';
 import 'package:coffee_shop/features/price/domain/entity/price_model.dart';
-
-import '../../../category/data/entity/category_dto.dart';
 
 class CoffeeModel {
   final int id;
   final String name;
   final String description;
-  final CategoryDto category;
+  final CategoryModel category;
   final String imageUrl;
   final List<PriceModel> prices;
 

@@ -7,8 +7,7 @@ abstract interface class IThemeDataSource {
 }
 
 class ThemeDataSource implements IThemeDataSource {
-  const ThemeDataSource({required SharedPreferencesAsync storage})
-      : _storage = storage;
+  const ThemeDataSource({required SharedPreferencesAsync storage}) : _storage = storage;
   final SharedPreferencesAsync _storage;
 
   final themeKey = "theme";

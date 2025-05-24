@@ -1,8 +1,7 @@
-import 'package:coffee_shop/features/category/data/entity/category_response_dto.dart';
-import 'package:coffee_shop/features/coffee/data/entity/coffee_response_dto.dart';
+import 'package:coffee_shop/features/coffee/data/entity/dto/coffee_response_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-
+import '../features/category/data/entity/dto/category_response_dto.dart';
 import '../features/order/data/entity/order_dto.dart';
 import '../features/order/data/entity/order_response_dto.dart';
 

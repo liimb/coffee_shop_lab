@@ -9,8 +9,7 @@ class ThemeRepository implements IThemeRepository {
 
   @override
   Future<String> getAppTheme() async {
-    final theme = await _themeDataSource.getAppTheme();
-    return theme;
+    return await _themeDataSource.getAppTheme();
   }
 
   @override

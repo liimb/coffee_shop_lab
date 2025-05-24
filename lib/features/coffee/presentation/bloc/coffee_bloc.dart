@@ -12,13 +12,19 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   final ICoffeeRepository _coffeeRepository;
 
   CoffeeBloc({required ICoffeeRepository coffeeRepository}) : _coffeeRepository = coffeeRepository, super(CoffeeState.initial()) {
-    on<LoadCoffee>((event, emit) async {
+    on<LoadCoffeeEvent>((event, emit) async {
       try {
         emit(CoffeeState.loading());
         final coffee = await fetchWithRetry(() => _coffeeRepository.getCoffee());
+        await _coffeeRepository.saveCoffeeToDb(coffee);
         emit(CoffeeState.loaded(coffee));
       } catch (e) {
-        emit(CoffeeState.error('Ошибка загрузки кофе'));
+        final coffee = await _coffeeRepository.getCoffeeFromDb();
+        if(coffee.isNotEmpty) {
+          emit(CoffeeState.loaded(coffee));
+        } else {
+          emit(CoffeeState.error('Ошибка загрузки кофе'));
+        }
       }
     });
   }

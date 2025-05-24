@@ -11,15 +11,16 @@ class CartBottomSheet extends StatelessWidget {
   final VoidCallback _onCleanCart;
   final VoidCallback _onCreateOrder;
 
-  const CartBottomSheet({required onCleanCart, required onCreateOrder, super.key}) : _onCleanCart = onCleanCart, _onCreateOrder = onCreateOrder;
+  const CartBottomSheet({required onCleanCart, required onCreateOrder, super.key}) :
+        _onCleanCart = onCleanCart,
+        _onCreateOrder = onCreateOrder;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
-        final coffeeList = state.coffee;
         final grouped = <CoffeeModel, int>{};
-        for (final coffee in coffeeList) {
+        for (final coffee in state.coffee) {
           grouped[coffee] = (grouped[coffee] ?? 0) + 1;
         }
 

@@ -16,7 +16,12 @@ final router = GoRouter(
           name: 'coffeeDetails',
           builder: (context, state) {
             final coffee = state.extra as CoffeeModel;
-            return CoffeeDetailsScreen(coffee: coffee);
+            return CoffeeDetailsScreen(
+              coffee: coffee,
+              onBack: () {
+                context.pop();
+              },
+            );
           },
         ),
       ],

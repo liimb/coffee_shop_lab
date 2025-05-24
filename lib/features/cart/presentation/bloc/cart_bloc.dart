@@ -25,11 +25,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         cartCoffee.addAll(List.filled(item.count, coffee));
       }
 
-      final totalPriceInCents = cartCoffee
-          .map((e) => (double.parse(e.prices.first.value) * 100).toInt())
-          .fold(0, (prev, price) => prev + price);
+      final totalPrice = _getTotalPrice(cartCoffee);
 
-      emit(state.copyWith(coffee: cartCoffee, price: totalPriceInCents));
+      emit(state.copyWith(coffee: cartCoffee, price: totalPrice));
     });
 
       on<CartAddCoffeeEvent>((event, emit) async {
@@ -40,11 +38,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
           await _cartRepository.addOrUpdateItemToCart(CartItem(id: event.coffeeModel.id, count: coffeeCount + 1));
 
-          final totalPriceInCents = updatedCoffee
-              .map((e) => (double.parse(e.prices.first.value) * 100).toInt())
-              .fold(0, (prev, price) => prev + price);
+          final totalPrice = _getTotalPrice(updatedCoffee);
 
-          emit(state.copyWith(coffee: updatedCoffee, price: totalPriceInCents));
+          emit(state.copyWith(coffee: updatedCoffee, price: totalPrice));
         }
 
       });
@@ -56,11 +52,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         await _cartRepository.addOrUpdateItemToCart(CartItem(id: event.coffeeModel.id, count: coffeeCount));
 
-        final totalPriceInCents = updatedCoffee
-            .map((e) => (double.parse(e.prices.first.value) * 100).toInt())
-            .fold(0, (prev, price) => prev + price);
+        final totalPrice = _getTotalPrice(updatedCoffee);
 
-        emit(state.copyWith(coffee: updatedCoffee, price: totalPriceInCents));
+        emit(state.copyWith(coffee: updatedCoffee, price: totalPrice));
       });
 
       on<CartCleanEvent>((event, emit) async {
@@ -68,4 +62,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         emit(state.copyWith(coffee: List.empty(), price: 0));
       });
     }
-  }
+
+    int _getTotalPrice(List<CoffeeModel> coffee) {
+      return coffee
+          .map((e) => (double.parse(e.prices.first.value) * 100).toInt())
+          .fold(0, (prev, price) => prev + price);
+    }
+}
